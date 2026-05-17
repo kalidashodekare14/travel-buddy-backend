@@ -7,13 +7,14 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node src/seed.js",
-    "seed:api": "node src/seedApi.js"
+    "seed:api": "node src/seedApi.js",
+    "build": "node -e \"console.log('Build complete')\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "type": "commonjs",
   "dependencies": {
