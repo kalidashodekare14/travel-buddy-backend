@@ -39,7 +39,6 @@ const getPosts = async (req, res) => {
       .limit(Number(limit));
 
     const total = await Post.countDocuments(filter);
-
     res.json({
       posts,
       page: Number(page),

@@ -4,11 +4,13 @@ const Post = require('../models/Post');
 const sendRequest = async (req, res) => {
   try {
     const { postId } = req.body;
+    console.log('checking postId', postId);
 
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
+
     if (post.createdBy.toString() === req.user._id.toString()) {
       return res.status(400).json({ message: 'Cannot send request to own post' });
     }
