@@ -2,22 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/api/index.js",
+      "src": "src/server.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/index.js",
-      "methods": [
-        "GET",
-        "POST",
-        "PATCH",
-        "PUT",
-        "DELETE",
-        "OPTIONS"
-      ]
+      "dest": "src/server.js"
     }
   ]
 }

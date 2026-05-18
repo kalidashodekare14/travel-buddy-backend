@@ -10,6 +10,9 @@ const connectDB = async () => {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI environment variable is not set. Add it to your Vercel project environment variables.');
+    }
     cached.promise = mongoose.connect(process.env.MONGO_URI).then((conn) => conn);
   }
 
