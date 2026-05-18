@@ -99,4 +99,15 @@ const deletePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getPosts, getPost, updatePost, deletePost };
+const getMyPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ createdBy: req.user._id })
+      .sort({ createdAt: -1 });
+
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { createPost, getPosts, getPost, updatePost, deletePost, getMyPosts };

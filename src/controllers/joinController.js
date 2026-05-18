@@ -75,4 +75,50 @@ const updateRequest = async (req, res) => {
   }
 };
 
-module.exports = { sendRequest, getRequestsForPost, updateRequest };
+const getMyRequests = async (req, res) => {
+  try {
+    const requests = await JoinRequest.find({ sender: req.user._id })
+      .populate('post', 'title destination image')
+      .populate('receiver', 'name avatar')
+      .sort({ createdAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const cancelRequest = async (req, res) => {
+  try {
+    const request = await JoinRequest.findById(req.params.id);
+    if (!request) {
+      return res.status(404).json({ message: 'Request not found' });
+    }
+    if (request.sender.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+    if (request.status !== 'pending') {
+      return res.status(400).json({ message: 'Can only cancel pending requests' });
+    }
+
+    await request.deleteOne();
+    res.json({ message: 'Request cancelled' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getReceivedRequests = async (req, res) => {
+  try {
+    const requests = await JoinRequest.find({ receiver: req.user._id })
+      .populate('post', 'title destination image')
+      .populate('sender', 'name avatar')
+      .sort({ createdAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { sendRequest, getRequestsForPost, updateRequest, getMyRequests, cancelRequest, getReceivedRequests };
